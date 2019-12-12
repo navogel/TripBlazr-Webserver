@@ -110,7 +110,7 @@ namespace TripBlazr_WebServer.Controllers
                 {
                     cmd.CommandText = @"INSERT INTO [User] (UserName, Password, Email)
                                         OUTPUT INSERTED.Id
-                                        VALUES (@title, @beanType)";
+                                        VALUES (@UserName, @Password, @Email)";
                     cmd.Parameters.Add(new SqlParameter("@UserName", user.UserName));
                     cmd.Parameters.Add(new SqlParameter("@Password", user.Password));
                     cmd.Parameters.Add(new SqlParameter("@Email", user.Email));
@@ -122,45 +122,45 @@ namespace TripBlazr_WebServer.Controllers
             }
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put([FromRoute] int id, [FromBody] User user)
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection conn = Connection)
-        //        {
-        //            conn.Open();
-        //            using (SqlCommand cmd = conn.CreateCommand())
-        //            {
-        //                cmd.CommandText = @"UPDATE User
-        //                                    SET Title = @title,
-        //                                        BeanType = @beanType
-        //                                    WHERE Id = @id";
-        //                cmd.Parameters.Add(new SqlParameter("@title", user.Title));
-        //                cmd.Parameters.Add(new SqlParameter("@beanType", user.BeanType));
-        //                cmd.Parameters.Add(new SqlParameter("@id", id));
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] User user)
+        {
+            try
+            {
+                using (SqlConnection conn = Connection)
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"UPDATE User
+                                            SET Title = @title,
+                                                BeanType = @beanType
+                                            WHERE Id = @id";
+                        cmd.Parameters.Add(new SqlParameter("@title", user.Title));
+                        cmd.Parameters.Add(new SqlParameter("@beanType", user.BeanType));
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
 
-        //                int rowsAffected = cmd.ExecuteNonQuery();
-        //                if (rowsAffected > 0)
-        //                {
-        //                    return new StatusCodeResult(StatusCodes.Status204NoContent);
-        //                }
-        //                throw new Exception("No rows affected");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-        //}
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            return new StatusCodeResult(StatusCodes.Status204NoContent);
+                        }
+                        throw new Exception("No rows affected");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                if (!UserExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
 
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> Delete([FromRoute] int id)
